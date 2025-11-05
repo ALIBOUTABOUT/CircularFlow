@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Award, TrendingUp, CheckCircle, Target } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/translations";
 
 const co2Data = [
   { month: "Jan", co2: 45 },
@@ -27,12 +29,15 @@ const badges = [
 ];
 
 export default function GreenPoints() {
+  const { language } = useLanguage();
+  const t = translations[language].greenPoints;
+  
   return (
     <div className="animate-fade-in space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Green Points Dashboard</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-2">{t.title}</h1>
         <p className="text-muted-foreground">
-          Track your environmental impact and community achievements
+          {t.subtitle}
         </p>
       </div>
 

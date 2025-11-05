@@ -2,15 +2,17 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThumbsUp, MessageCircle, Calendar, User } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/translations";
 
 const ideas = [
   {
     id: 1,
     title: "Regional Heat Network Integration",
-    author: "Maria Schmidt",
-    company: "ThermalTech GmbH",
+    author: "Amira Benali",
+    company: "ThermalTech Algeria",
     date: "2 days ago",
-    description: "Proposal to create a coordinated heat exchange network connecting 5+ industrial facilities in the Hamburg area.",
+    description: "Proposal to create a coordinated heat exchange network connecting 5+ industrial facilities in the Algiers area.",
     tags: ["Waste Heat", "Infrastructure", "Large Scale"],
     votes: 42,
     comments: 15,
@@ -51,17 +53,20 @@ const ideas = [
 ];
 
 export default function IdeasLab() {
+  const { language } = useLanguage();
+  const t = translations[language].ideas;
+  
   return (
     <div className="animate-fade-in">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Circular Ideas Lab</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t.title}</h1>
           <p className="text-muted-foreground">
-            Collaborate on innovative circular economy projects
+            {t.subtitle}
           </p>
         </div>
         <Button className="bg-accent hover:bg-accent/90">
-          Post New Idea
+          {t.postNewIdea}
         </Button>
       </div>
 
@@ -75,7 +80,7 @@ export default function IdeasLab() {
                   <ThumbsUp className="h-5 w-5" />
                 </Button>
                 <span className="text-lg font-semibold text-foreground">{idea.votes}</span>
-                <span className="text-xs text-muted-foreground">votes</span>
+                <span className="text-xs text-muted-foreground">{t.votes}</span>
               </div>
 
               {/* Content */}
@@ -110,7 +115,7 @@ export default function IdeasLab() {
 
                   <Button variant="ghost" size="sm" className="gap-2">
                     <MessageCircle className="h-4 w-4" />
-                    {idea.comments} comments
+                    {idea.comments} {t.comments}
                   </Button>
                 </div>
               </div>

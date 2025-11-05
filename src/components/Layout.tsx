@@ -1,20 +1,24 @@
 import { Link, useLocation } from "react-router-dom";
 import { Recycle, Map, Package, Award, Lightbulb, Wrench, TrendingUp, User } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const navigation = [
-  { name: "Home", href: "/", icon: Recycle },
-  { name: "Map", href: "/map", icon: Map },
-  { name: "Resources", href: "/resources", icon: Package },
-  { name: "Green Points", href: "/green-points", icon: Award },
-  { name: "Ideas Lab", href: "/ideas", icon: Lightbulb },
-  { name: "Services", href: "/services", icon: Wrench },
-  { name: "Stories", href: "/stories", icon: TrendingUp },
-  { name: "Profile", href: "/profile", icon: User },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/translations";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
+  const { language } = useLanguage();
+  const t = translations[language];
+
+  const navigation = [
+    { name: t.nav.home, href: "/", icon: Recycle },
+    { name: t.nav.map, href: "/map", icon: Map },
+    { name: t.nav.resources, href: "/resources", icon: Package },
+    { name: t.nav.greenPoints, href: "/green-points", icon: Award },
+    { name: t.nav.ideas, href: "/ideas", icon: Lightbulb },
+    { name: t.nav.services, href: "/services", icon: Wrench },
+    { name: t.nav.stories, href: "/stories", icon: TrendingUp },
+    { name: t.nav.profile, href: "/profile", icon: User },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-hero">

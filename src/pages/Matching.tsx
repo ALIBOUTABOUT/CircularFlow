@@ -2,11 +2,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Flame, Factory, TrendingUp, MapPin, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/translations";
 
 const matches = [
   {
     id: 1,
-    provider: "ThermalTech GmbH",
+    provider: "ThermalTech Algeria",
     receiver: "GreenHeat Solutions",
     resource: "Waste Heat",
     compatibility: 95,
@@ -19,7 +21,7 @@ const matches = [
     id: 2,
     provider: "GlassWorks Industries",
     receiver: "BuildMat Recycling",
-    intermediary: "TransitHub GmbH",
+    intermediary: "TransitHub Algeria",
     resource: "Glass Scraps",
     compatibility: 88,
     distance: "12 km",
@@ -41,12 +43,15 @@ const matches = [
 ];
 
 export default function Matching() {
+  const { language } = useLanguage();
+  const t = translations[language].matching;
+  
   return (
     <div className="animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Smart Matching</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-2">{t.title}</h1>
         <p className="text-muted-foreground">
-          AI-powered recommendations to connect your resources with the right partners
+          {t.subtitle}
         </p>
       </div>
 
@@ -66,7 +71,7 @@ export default function Matching() {
                   ))}
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-1">
-                  {match.resource} Exchange
+                  {match.resource} {t.exchange}
                 </h3>
                 <p className="text-sm text-muted-foreground">{match.description}</p>
               </div>
@@ -79,7 +84,7 @@ export default function Matching() {
                 </div>
                 <div>
                   <p className="font-medium text-foreground">{match.provider}</p>
-                  <p className="text-xs text-muted-foreground">Provider</p>
+                  <p className="text-xs text-muted-foreground">{t.provider}</p>
                 </div>
               </div>
 
@@ -93,7 +98,7 @@ export default function Matching() {
                     </div>
                     <div>
                       <p className="font-medium text-foreground">{match.intermediary}</p>
-                      <p className="text-xs text-muted-foreground">Intermediary</p>
+                      <p className="text-xs text-muted-foreground">{t.intermediary}</p>
                     </div>
                   </div>
                   <ArrowRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
@@ -106,7 +111,7 @@ export default function Matching() {
                 </div>
                 <div>
                   <p className="font-medium text-foreground">{match.receiver}</p>
-                  <p className="text-xs text-muted-foreground">Receiver</p>
+                  <p className="text-xs text-muted-foreground">{t.receiver}</p>
                 </div>
               </div>
             </div>
@@ -114,20 +119,20 @@ export default function Matching() {
             <div className="flex items-center gap-6 mb-6 text-sm">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span className="text-muted-foreground">{match.distance} distance</span>
+                <span className="text-muted-foreground">{match.distance} {t.distance}</span>
               </div>
               <div className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-success" />
-                <span className="text-success font-medium">{match.co2Savings} CO₂ saved</span>
+                <span className="text-success font-medium">{match.co2Savings} {t.saved}</span>
               </div>
             </div>
 
             <div className="flex gap-3">
               <Button className="flex-1 bg-accent hover:bg-accent/90">
-                Propose Match
+                {t.proposeMatch}
               </Button>
               <Button variant="outline" className="flex-1">
-                View Details
+                {t.viewDetails}
               </Button>
             </div>
           </Card>

@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Flame, Trash2, TreePine, Droplet, X } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/translations";
 
 const clusters = [
   { id: 1, type: "heat", x: "30%", y: "40%", count: 12, color: "bg-red-500" },
@@ -13,20 +15,20 @@ const clusters = [
 
 const companies = {
   heat: [
-    { name: "ThermalTech GmbH", location: "Hamburg", resources: "500 kW continuous" },
-    { name: "IndustrialHeat Co.", location: "Hamburg", resources: "300 kW peak" },
+    { name: "ThermalTech Algeria", location: "Algiers", resources: "500 kW continuous" },
+    { name: "IndustrialHeat Co.", location: "Algiers", resources: "300 kW peak" },
   ],
   glass: [
-    { name: "GlassWorks Industries", location: "Munich", resources: "12 tons/month" },
-    { name: "Crystal Processing", location: "Munich", resources: "8 tons/month" },
+    { name: "GlassWorks Industries", location: "Oran", resources: "12 tons/month" },
+    { name: "Crystal Processing", location: "Oran", resources: "8 tons/month" },
   ],
   wood: [
-    { name: "Forest Products Co.", location: "Berlin", resources: "25 tons/week" },
-    { name: "TimberWorks GmbH", location: "Berlin", resources: "18 tons/week" },
+    { name: "Forest Products Co.", location: "Constantine", resources: "25 tons/week" },
+    { name: "TimberWorks Algeria", location: "Constantine", resources: "18 tons/week" },
   ],
   oil: [
-    { name: "AutoService Plus", location: "Frankfurt", resources: "800 liters/month" },
-    { name: "Industrial Oils Ltd", location: "Frankfurt", resources: "600 liters/month" },
+    { name: "AutoService Plus", location: "Annaba", resources: "800 liters/month" },
+    { name: "Industrial Oils Ltd", location: "Annaba", resources: "600 liters/month" },
   ],
 };
 
@@ -46,13 +48,15 @@ const typeLabels = {
 
 export default function MapView() {
   const [selectedCluster, setSelectedCluster] = useState<string | null>(null);
+  const { language } = useLanguage();
+  const t = translations[language].map;
 
   return (
     <div className="animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Interactive Resource Map</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-2">{t.title}</h1>
         <p className="text-muted-foreground">
-          Explore resource clusters and discover nearby opportunities
+          {t.subtitle}
         </p>
       </div>
 
@@ -139,7 +143,7 @@ export default function MapView() {
                         {company.resources}
                       </Badge>
                       <Button className="w-full mt-3" size="sm">
-                        View Details
+                        {t.viewDetails}
                       </Button>
                     </Card>
                   ))}
@@ -149,10 +153,10 @@ export default function MapView() {
               <div className="h-full flex items-center justify-center text-center">
                 <div>
                   <p className="text-muted-foreground mb-2">
-                    Click on a cluster to view companies
+                    {t.clickCluster}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Clusters show the number of available resources in each area
+                    {t.clustersInfo}
                   </p>
                 </div>
               </div>

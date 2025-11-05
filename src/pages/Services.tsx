@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, Truck, FlaskConical, Wrench, MapPin } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/translations";
 
 const services = [
   {
@@ -10,7 +12,7 @@ const services = [
     category: "Logistics",
     rating: 4.8,
     reviews: 127,
-    location: "Hamburg, Germany",
+    location: "Algiers, Algeria",
     description: "Specialized in sustainable transportation of industrial materials and waste streams.",
     services: ["Transport", "Storage", "Route Optimization"],
     icon: Truck,
@@ -21,7 +23,7 @@ const services = [
     category: "Testing",
     rating: 4.9,
     reviews: 89,
-    location: "Munich, Germany",
+    location: "Oran, Algeria",
     description: "Comprehensive testing and certification services for recycled and reclaimed materials.",
     services: ["Material Testing", "Certification", "Quality Analysis"],
     icon: FlaskConical,
@@ -32,7 +34,7 @@ const services = [
     category: "Equipment",
     rating: 4.7,
     reviews: 156,
-    location: "Berlin, Germany",
+    location: "Constantine, Algeria",
     description: "Wide range of processing and handling equipment for circular economy operations.",
     services: ["Equipment Rental", "Installation", "Maintenance"],
     icon: Wrench,
@@ -43,7 +45,7 @@ const services = [
     category: "Logistics",
     rating: 4.6,
     reviews: 94,
-    location: "Frankfurt, Germany",
+    location: "Annaba, Algeria",
     description: "Carbon-neutral logistics solutions for industrial resource exchange.",
     services: ["CO₂ Neutral Transport", "Tracking", "Documentation"],
     icon: Truck,
@@ -51,12 +53,15 @@ const services = [
 ];
 
 export default function Services() {
+  const { language } = useLanguage();
+  const t = translations[language].services;
+  
   return (
     <div className="animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Services Marketplace</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-2">{t.title}</h1>
         <p className="text-muted-foreground">
-          Find logistics, testing, and equipment providers for your circular economy needs
+          {t.subtitle}
         </p>
       </div>
 
@@ -83,7 +88,7 @@ export default function Services() {
                     <span className="font-medium text-foreground">{service.rating}</span>
                   </div>
                   <span className="text-sm text-muted-foreground">
-                    ({service.reviews} reviews)
+                    ({service.reviews} {t.reviews})
                   </span>
                 </div>
 
@@ -106,10 +111,10 @@ export default function Services() {
 
                 <div className="flex gap-3">
                   <Button className="flex-1 bg-accent hover:bg-accent/90">
-                    Contact Provider
+                    {t.contactProvider}
                   </Button>
                   <Button variant="outline" className="flex-1">
-                    View Profile
+                    {t.viewProfile}
                   </Button>
                 </div>
               </div>

@@ -2,14 +2,16 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, MapPin, Calendar } from "lucide-react";
 import successImage from "@/assets/success-story.jpg";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/translations";
 
 const stories = [
   {
     id: 1,
-    title: "Hamburg Heat Exchange Network Success",
-    company: "ThermalTech GmbH & Partners",
+    title: "Algiers Heat Exchange Network Success",
+    company: "ThermalTech Algeria & Partners",
     date: "March 2024",
-    location: "Hamburg, Germany",
+    location: "Algiers, Algeria",
     image: successImage,
     description: "Successfully established a regional heat exchange network connecting 6 industrial facilities, transforming waste heat into a valuable community resource.",
     impact: {
@@ -24,7 +26,7 @@ const stories = [
     title: "Glass Recycling Innovation Partnership",
     company: "GlassWorks & BuildMat Recycling",
     date: "February 2024",
-    location: "Munich, Germany",
+    location: "Oran, Algeria",
     image: successImage,
     description: "Pioneering collaboration converts glass manufacturing waste into premium building insulation material, closing the loop in construction materials.",
     impact: {
@@ -39,7 +41,7 @@ const stories = [
     title: "Wood-to-Biomass Energy Chain",
     company: "Forest Products & BioPower Energy",
     date: "January 2024",
-    location: "Berlin, Germany",
+    location: "Constantine, Algeria",
     image: successImage,
     description: "Transformed wood processing residues into reliable biomass fuel supply, powering local community heating systems sustainably.",
     impact: {
@@ -52,12 +54,15 @@ const stories = [
 ];
 
 export default function Stories() {
+  const { language } = useLanguage();
+  const t = translations[language].stories;
+  
   return (
     <div className="animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Success Stories</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-2">{t.title}</h1>
         <p className="text-muted-foreground">
-          Real impact from circular economy partnerships
+          {t.subtitle}
         </p>
       </div>
 
@@ -115,19 +120,19 @@ export default function Stories() {
                   <div>
                     <div className="flex items-center gap-1 mb-1">
                       <TrendingUp className="h-4 w-4 text-success" />
-                      <span className="text-xs text-muted-foreground">CO₂ Saved</span>
+                      <span className="text-xs text-muted-foreground">{t.co2Saved}</span>
                     </div>
                     <p className="text-lg font-bold text-foreground">{story.impact.co2}</p>
                   </div>
                   <div>
                     <div className="flex items-center gap-1 mb-1">
                       <MapPin className="h-4 w-4 text-accent" />
-                      <span className="text-xs text-muted-foreground">Distance</span>
+                      <span className="text-xs text-muted-foreground">{t.distance}</span>
                     </div>
                     <p className="text-lg font-bold text-foreground">{story.impact.distance}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground mb-1">Materials</p>
+                    <p className="text-xs text-muted-foreground mb-1">{t.materials}</p>
                     <p className="text-lg font-bold text-foreground truncate">
                       {story.impact.materials}
                     </p>

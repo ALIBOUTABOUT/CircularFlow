@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,23 +9,129 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Building2, Mail, MapPin, Phone, Moon, Sun, Globe, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/translations";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function Profile() {
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
-  const [language, setLanguage] = useState("en");
+  const navigate = useNavigate();
+  const { language, setLanguage } = useLanguage();
+  
+  const [companyName, setCompanyName] = useState("ThermalTech Algeria");
+  const [sector, setSector] = useState("Manufacturing");
+  const [email, setEmail] = useState("contact@thermaltech.dz");
+  const [phone, setPhone] = useState("+213 21 1234 5678");
+  const [address, setAddress] = useState("Zone Industrielle, Rue de l Industrie 123, 16000 Algiers, Algeria");
+  
+  const [isEditing, setIsEditing] = useState(false);
+
+  const t = translations[language].profile;
+
+  const handleSaveChanges = () => {
+    toast({
+      title: t.companyInfo.save,
+      description: "Your company information has been updated successfully.",
+    });
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setCompanyName("ThermalTech Algeria");
+    setSector("Manufacturing");
+    setEmail("contact@thermaltech.dz");
+    setPhone("+213 21 1234 5678");
+    setAddress("Zone Industrielle, Rue de l Industrie 123, 16000 Algiers, Algeria");
+    setIsEditing(false);
+    toast({
+      title: t.companyInfo.cancel,
+      description: "Your edits have been discarded.",
+    });
+  };
+
+  const handleLanguageChange = (value: string) => {
+    setLanguage(value as "en" | "fr" | "ar");
+    const langName = value === "en" ? "English" : value === "fr" ? "Français" : "العربية";
+    toast({
+      title: "Language Changed",
+      description: `Language switched to ${langName}`,
+    });
+  };
+
+  const handleConfigureNotifications = () => {
+    toast({
+      title: "Notifications Settings",
+      description: "Opening notification preferences...",
+    });
+  };
+
+  const handleLogout = () => {
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
+
+  const handleDeactivateAccount = () => {
+    toast({
+      variant: "destructive",
+      title: "Account Deactivated",
+      description: "Your account has been deactivated. Redirecting...",
+    });
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
+  };
+
+  const handleAddResource = () => {
+    toast({
+      title: "Add Resource",
+      description: "Opening resource creation form...",
+    });
+  };
+
+  const handleEditResource = () => {
+    toast({
+      title: "Edit Resource",
+      description: "Opening resource editor...",
+    });
+  };
+
+  const handleRemoveResource = () => {
+    toast({
+      variant: "destructive",
+      title: "Resource Removed",
+      description: "The resource has been removed from your listings.",
+    });
+  };
+
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Company Profile</h1>
-        <p className="text-muted-foreground">Manage your company information and settings</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2">{t.title}</h1>
+        <p className="text-muted-foreground">{t.subtitle}</p>
       </div>
 
       <Tabs defaultValue="company" className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="company">Company Info</TabsTrigger>
-          <TabsTrigger value="resources">Resources</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="company">{t.tabs.company}</TabsTrigger>
+          <TabsTrigger value="resources">{t.tabs.resources}</TabsTrigger>
+          <TabsTrigger value="settings">{t.tabs.settings}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="company">
@@ -36,50 +142,96 @@ export default function Profile() {
                   <Building2 className="h-8 w-8 text-accent" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-foreground">ThermalTech GmbH</h3>
-                  <p className="text-sm text-muted-foreground">Manufacturing • Hamburg, Germany</p>
+                  <h3 className="text-xl font-semibold text-foreground">ThermalTech Algeria</h3>
+                  <p className="text-sm text-muted-foreground">Manufacturing  Algiers, Algeria</p>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="company-name">Company Name</Label>
-                  <Input id="company-name" defaultValue="ThermalTech GmbH" />
+                  <Label htmlFor="company-name">{t.companyInfo.companyName}</Label>
+                  <Input 
+                    id="company-name" 
+                    value={companyName}
+                    onChange={(e) => {
+                      setCompanyName(e.target.value);
+                      setIsEditing(true);
+                    }}
+                  />
                 </div>
                 <div>
-                  <Label htmlFor="sector">Industry Sector</Label>
-                  <Input id="sector" defaultValue="Manufacturing" />
+                  <Label htmlFor="sector">{t.companyInfo.sector}</Label>
+                  <Input 
+                    id="sector" 
+                    value={sector}
+                    onChange={(e) => {
+                      setSector(e.target.value);
+                      setIsEditing(true);
+                    }}
+                  />
                 </div>
                 <div>
-                  <Label htmlFor="email">Contact Email</Label>
+                  <Label htmlFor="email">{t.companyInfo.email}</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input id="email" className="pl-10" defaultValue="contact@thermaltech.de" />
+                    <Input 
+                      id="email" 
+                      className="pl-10" 
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setIsEditing(true);
+                      }}
+                    />
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="phone">{t.companyInfo.phone}</Label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input id="phone" className="pl-10" defaultValue="+49 40 1234 5678" />
+                    <Input 
+                      id="phone" 
+                      className="pl-10" 
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        setIsEditing(true);
+                      }}
+                    />
                   </div>
                 </div>
                 <div className="md:col-span-2">
-                  <Label htmlFor="address">Address</Label>
+                  <Label htmlFor="address">{t.companyInfo.address}</Label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="address"
                       className="pl-10"
-                      defaultValue="Industriestraße 123, 20095 Hamburg, Germany"
+                      value={address}
+                      onChange={(e) => {
+                        setAddress(e.target.value);
+                        setIsEditing(true);
+                      }}
                     />
                   </div>
                 </div>
               </div>
 
               <div className="flex justify-end gap-3 pt-4">
-                <Button variant="outline">Cancel</Button>
-                <Button className="bg-accent hover:bg-accent/90">Save Changes</Button>
+                <Button 
+                  variant="outline"
+                  onClick={handleCancelEdit}
+                  disabled={!isEditing}
+                >
+                  {t.companyInfo.cancel}
+                </Button>
+                <Button 
+                  className="bg-accent hover:bg-accent/90"
+                  onClick={handleSaveChanges}
+                  disabled={!isEditing}
+                >
+                  {t.companyInfo.save}
+                </Button>
               </div>
             </div>
           </Card>
@@ -88,8 +240,13 @@ export default function Profile() {
         <TabsContent value="resources">
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-foreground">Your Resources</h3>
-              <Button className="bg-accent hover:bg-accent/90">Add Resource</Button>
+              <h3 className="text-lg font-semibold text-foreground">{t.resources.title}</h3>
+              <Button 
+                className="bg-accent hover:bg-accent/90"
+                onClick={handleAddResource}
+              >
+                {t.resources.addButton}
+              </Button>
             </div>
 
             <div className="space-y-4">
@@ -98,11 +255,40 @@ export default function Profile() {
                   <div>
                     <h4 className="font-medium text-foreground mb-1">Waste Heat</h4>
                     <p className="text-sm text-muted-foreground mb-2">500 kW continuous output</p>
-                    <p className="text-xs text-muted-foreground">Listed: 2 months ago • 12 views</p>
+                    <p className="text-xs text-muted-foreground">
+                      {t.resources.listed}: 2 {t.resources.months} {t.resources.ago}  12 {t.resources.views}
+                    </p>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">Edit</Button>
-                    <Button variant="ghost" size="sm">Remove</Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={handleEditResource}
+                    >
+                      {t.resources.edit}
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="sm">{t.resources.remove}</Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t.resources.removeTitle}</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t.resources.removeDesc}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{translations[language].common.cancel}</AlertDialogCancel>
+                          <AlertDialogAction 
+                            onClick={handleRemoveResource}
+                            className="bg-destructive hover:bg-destructive/90"
+                          >
+                            {t.resources.remove}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               </Card>
@@ -112,14 +298,14 @@ export default function Profile() {
 
         <TabsContent value="settings">
           <Card className="p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-6">Account Settings</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-6">{t.settings.title}</h3>
             <div className="space-y-6">
               <div>
                 <Label htmlFor="language" className="flex items-center gap-2 mb-3">
                   <Globe className="h-4 w-4" />
-                  Language
+                  {t.settings.language}
                 </Label>
-                <Select value={language} onValueChange={setLanguage}>
+                <Select value={language} onValueChange={handleLanguageChange}>
                   <SelectTrigger className="w-full md:w-64">
                     <SelectValue placeholder="Select language" />
                   </SelectTrigger>
@@ -136,10 +322,10 @@ export default function Profile() {
                   <div>
                     <Label className="flex items-center gap-2 mb-1">
                       {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                      Theme
+                      {t.settings.theme}
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      {theme === "dark" ? "Dark mode" : "Light mode"}
+                      {theme === "dark" ? t.settings.darkMode : t.settings.lightMode}
                     </p>
                   </div>
                   <Switch
@@ -150,37 +336,58 @@ export default function Profile() {
               </div>
 
               <div className="pt-4 border-t border-border">
-                <Label htmlFor="notifications">Email Notifications</Label>
+                <Label htmlFor="notifications">{t.settings.notifications}</Label>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Receive updates about matches, messages, and platform news
+                  {t.settings.notificationsDesc}
                 </p>
-                <Button variant="outline">Configure Notifications</Button>
+                <Button 
+                  variant="outline"
+                  onClick={handleConfigureNotifications}
+                >
+                  {t.settings.configureNotif}
+                </Button>
               </div>
 
               <div className="pt-4 border-t border-border">
                 <Button 
                   variant="outline" 
                   className="w-full md:w-auto"
-                  onClick={() => {
-                    toast({
-                      title: "Logged out",
-                      description: "You have been successfully logged out.",
-                    });
-                  }}
+                  onClick={handleLogout}
                 >
                   <LogOut className="h-4 w-4 mr-2" />
-                  Log Out
+                  {t.settings.logout}
                 </Button>
               </div>
 
               <div className="pt-4 border-t border-border">
-                <Label className="text-destructive">Danger Zone</Label>
+                <Label className="text-destructive">{t.settings.dangerZone}</Label>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Irreversible actions that affect your account
+                  {t.settings.dangerDesc}
                 </p>
-                <Button variant="outline" className="text-destructive hover:bg-destructive/10">
-                  Deactivate Account
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline" className="text-destructive hover:bg-destructive/10">
+                      {t.settings.deactivate}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>{t.settings.deactivateTitle}</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        {t.settings.deactivateDesc}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>{translations[language].common.cancel}</AlertDialogCancel>
+                      <AlertDialogAction 
+                        onClick={handleDeactivateAccount}
+                        className="bg-destructive hover:bg-destructive/90"
+                      >
+                        {t.settings.yesDeactivate}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           </Card>
