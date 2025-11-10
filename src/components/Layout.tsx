@@ -3,6 +3,7 @@ import { Recycle, Map, Package, Award, Lightbulb, Wrench, TrendingUp, User } fro
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translations } from "@/translations";
+import logo from "@/assets/mainlogo.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -25,10 +26,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <nav className="border-b border-border bg-card/50 backdrop-blur-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <Recycle className="h-8 w-8 text-accent" />
-              <span className="text-xl font-bold text-foreground">CircularFlow</span>
-            </div>
+            <Link to="/" className="flex items-center gap-0 hover:opacity-80 transition-opacity">
+              <img src={logo} alt="CircularFlow Logo" className="h-14 w-14 object-contain" />
+              <span className="text-2xl font-extrabold text-foreground tracking-tight bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+                CircularFlow
+              </span>
+            </Link>
             
             <div className="hidden md:flex items-center gap-1">
               {navigation.map((item) => {
